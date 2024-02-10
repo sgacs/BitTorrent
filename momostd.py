@@ -3,13 +3,12 @@
 # This is a slightly smarter version of the dummy peer.
 # The setup script will copy it to create the versions you edit
 
-import random
 import logging
+import random
 
-from messages import Upload, Request
-from util import even_split
+from messages import Request, Upload
 from peer import Peer
-import heapq
+from util import even_split
 
 
 class LessDummy(Peer):
