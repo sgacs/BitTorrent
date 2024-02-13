@@ -33,8 +33,9 @@ class MomoTyrant(Peer):
         self.round = 0
 
     def requests(self, peers, history):
-        def needed(i):
-            return self.pieces[i] < self.conf.blocks_per_piece
+        
+        needed = lambda i: self.pieces[i] < self.conf.blocks_per_piece
+        needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
 
         needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
         random.shuffle(needed_pieces)

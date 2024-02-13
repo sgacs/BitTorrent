@@ -44,9 +44,7 @@ class MomoStd(Peer):
         """
 
         # Calculate the pieces you still need
-        def needed(i):
-            return self.pieces[i] < self.conf.blocks_per_piece
-
+        needed = lambda i: self.pieces[i] < self.conf.blocks_per_piece
         needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
         # Symmetry breaking is good, it creates more opportunities to trade
         # Try commenting this out and see what happens to performance...
@@ -103,9 +101,9 @@ class MomoStd(Peer):
             bws = []
         else:
             # Standard strategy for choosing whom to unchoke
-            #logging.debug(
+            # logging.debug(
             #    "Still here: %s, uploading to a random peer %d" % self.id, chosen
-            #)
+            # )
             chosen = [
                 req.requester_id
                 for req in random.sample(requests, min(len(requests), 3))
