@@ -19,6 +19,7 @@ class MomoTyrant(Peer):
         self.dummy_state["cake"] = "lie"
         self.frequencies = {}
         self.pieces = []
+        self.blocks_per_piece = 0
         self.conf = None
         self.max_requests = 0
         self.available_pieces = set()
@@ -33,7 +34,7 @@ class MomoTyrant(Peer):
         self.round = 0
 
     def requests(self, peers, history):
-        
+
         needed = lambda i: self.pieces[i] < self.conf.blocks_per_piece
         needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
 

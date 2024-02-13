@@ -21,6 +21,7 @@ class MomoPropShare(Peer):
         self.pieces = []
         self.conf = None
         self.max_requests = 0
+        self.blocks_per_piece = 0
         self.available_pieces = set()
         self.downloads = []
         self.uploaded = 0
@@ -36,7 +37,7 @@ class MomoPropShare(Peer):
         
         needed = lambda i: self.pieces[i] < self.conf.blocks_per_piece
         needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
-        
+
         random.shuffle(needed_pieces)
 
         logging.debug("%s here: still need pieces %s" % (self.id, needed_pieces))

@@ -22,6 +22,7 @@ class MomoStd(Peer):
         self.pieces = []
         self.conf = None
         self.max_requests = 0
+        self.blocks_per_piece = 0
         self.available_pieces = set()
         self.downloads = []
         self.uploaded = 0
