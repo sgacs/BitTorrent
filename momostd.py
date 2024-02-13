@@ -103,9 +103,9 @@ class MomoStd(Peer):
             bws = []
         else:
             # Standard strategy for choosing whom to unchoke
-            logging.debug(
-                "Still here: %s, uploading to a random peer %d" % self.id, chosen
-            )
+            #logging.debug(
+            #    "Still here: %s, uploading to a random peer %d" % self.id, chosen
+            #)
             chosen = [
                 req.requester_id
                 for req in random.sample(requests, min(len(requests), 3))
