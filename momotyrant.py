@@ -31,13 +31,13 @@ class LessDummy(Peer):
         self.interested_in = set()
         self.optimistic_unchoked = None
         self.round = 0
-    
+
     def requests(self, peers, history):
         def needed(i):
             return self.pieces[i] < self.conf.blocks_per_piece
 
         needed_pieces = list(filter(needed, list(range(len(self.pieces)))))
-        random.shuffle(needed_pieces) 
+        random.shuffle(needed_pieces)
 
         logging.debug("%s here: still need pieces %s" % (self.id, needed_pieces))
 
@@ -50,20 +50,22 @@ class LessDummy(Peer):
                     frequencies[piece] += 1
 
         download_contributions = {}
-        if history.current_round() > 0:  
-            for download in history.downloads[-1]:  
+        if history.current_round() > 0:
+            for download in history.downloads[-1]:
                 if download.from_id in download_contributions:
                     download_contributions[download.from_id] += download.blocks
                 else:
                     download_contributions[download.from_id] = download.blocks
 
-        peers_by_contribution = sorted(peers, key=lambda peer: download_contributions.get(peer.id, 0), reverse=True)
+        peers_by_contribution = sorted(
+            peers, key=lambda peer: download_contributions.get(peer.id, 0), reverse=True
+        )
 
         for peer in peers_by_contribution:
             av_set = set(peer.available_pieces)
             isect = av_set.intersection(set(needed_pieces))
             isectlist = list(isect)
-            random.shuffle(isectlist)  
+            random.shuffle(isectlist)
             isectlist.sort(key=lambda p: frequencies[p])
             n = min(self.max_requests, len(isectlist))
             for piece_id in isectlist[:n]:
@@ -73,7 +75,6 @@ class LessDummy(Peer):
 
         return requests
 
-    
     def uploads(self, requests, peers, history):
         round = history.current_round()
         logging.debug("%s again. It's round %d." % (self.id, round))
@@ -98,11 +99,13 @@ class LessDummy(Peer):
 
         bws = even_split(self.up_bw, len(chosen))
 
-        unchoke_int = 3 
+        unchoke_int = 3
         if round % unchoke_int == 0:
-            optimistic_unchoke_peer = random.choice([req.requester_id for req in requests if req.requester_id not in chosen])
+            optimistic_unchoke_peer = random.choice(
+                [req.requester_id for req in requests if req.requester_id not in chosen]
+            )
             chosen.append(optimistic_unchoke_peer)
             bws = even_split(self.up_bw, len(chosen))
 
         uploads = [Upload(self.id, peer_id, bw) for (peer_id, bw) in zip(chosen, bws)]
-        return uploads        return uploads
+        return uploads
