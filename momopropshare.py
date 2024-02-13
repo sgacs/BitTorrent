@@ -77,7 +77,6 @@ class LessDummy(Peer):
 
         return requests
 
-
     def uploads(self, requests, peers, history):
         round = history.current_round()
         logging.debug("%s again. It's round %d." % (self.id, round))
@@ -131,9 +130,11 @@ class LessDummy(Peer):
             )
             chosen.append(Upload(self.id, optimistic_unchoke_peer, reserved_bw))
             bws = even_split(self.up_bw, len(chosen))
-            uploads = [Upload(self.id, peer_id, bw) for (peer_id, bw) in zip(chosen, bws)]
+            uploads = [
+                Upload(self.id, peer_id, bw) for (peer_id, bw) in zip(chosen, bws)
+            ]
         else:
             for req in requests:
                 peer_id = req.requester_id
                 chosen.append(Upload(self.id, peer_id, reserved_bw // len(requests)))
-        return uploads        return uploads
+        return uploads
