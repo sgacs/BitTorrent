@@ -11,7 +11,7 @@ from peer import Peer
 from util import even_split
 
 
-class LessDummy(Peer):
+class MomoTyrant(Peer):
     def post_init(self):
         print("post_init(): %s here!" % self.id)
 
